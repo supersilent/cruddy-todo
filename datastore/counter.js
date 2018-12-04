@@ -45,6 +45,7 @@ exports.getNextUniqueId = callback => {
       if (callback) {
         callback(error, counterString);
       }
+      
     });
   });
   return zeroPaddedNumber(counter);
