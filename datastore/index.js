@@ -8,21 +8,22 @@ var items = {};
 // Public API - Fix these CRUD functions ///////////////////////////////////////
 
 exports.create = (text, callback) => {
+  let id;
   counter.getNextUniqueId(
     (error, counter) => {
       fs.writeFile(exports.dataDir + "/" + counter + ".txt", text, err => {
         if (err) {
           throw "error creating todo";
         } else {
-          items[counter] = text;
-          console.log('counter:',counter);
+          id = counter;
+          // items[counter] = text; 
+          // console.log('counter:',counter);
           callback(null, {
-            counter,
+            id,
             text
           });
         }
-      })
-      ;
+      });
     }
   );
 
