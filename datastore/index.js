@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
-const _ = require('underscore');
-const counter = require('./counter');
+const fs = require("fs");
+const path = require("path");
+const _ = require("underscore");
+const counter = require("./counter");
 
 var items = {};
 
@@ -10,17 +10,17 @@ var items = {};
 exports.create = (text, callback) => {
   var id = counter.getNextUniqueId();
   items[id] = text;
-  let filePath = exports.dataDir + '/' + id + '.txt';
+  let filePath = exports.dataDir + "/" + id + ".txt";
   fs.writeFile(filePath, text, err => {
     if (err) {
-      throw 'error creating todo';
+      throw "error creating todo";
     } else {
       callback(null, { id, text });
     }
-  })
+  });
 };
 
-exports.readAll = (callback) => {
+exports.readAll = callback => {
   var data = [];
   _.each(items, (text, id) => {
     data.push({ id, text });
@@ -60,7 +60,7 @@ exports.delete = (id, callback) => {
 
 // Config+Initialization code -- DO NOT MODIFY /////////////////////////////////
 
-exports.dataDir = path.join(__dirname, 'data');
+exports.dataDir = path.join(__dirname, "data");
 
 exports.initialize = () => {
   if (!fs.existsSync(exports.dataDir)) {
