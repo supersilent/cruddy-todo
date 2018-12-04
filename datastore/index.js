@@ -8,22 +8,33 @@ var items = {};
 // Public API - Fix these CRUD functions ///////////////////////////////////////
 
 exports.create = (text, callback) => {
-  var id = counter.getNextUniqueId();
-  items[id] = text;
-  let filePath = exports.dataDir + "/" + id + ".txt";
-  fs.writeFile(filePath, text, err => {
-    if (err) {
-      throw "error creating todo";
-    } else {
-      callback(null, { id, text });
+  counter.getNextUniqueId(
+    (error, counter) => {
+      fs.writeFile(exports.dataDir + "/" + counter + ".txt", text, err => {
+        if (err) {
+          throw "error creating todo";
+        } else {
+          items[counter] = text;
+          console.log('counter:',counter);
+          callback(null, {
+            counter,
+            text
+          });
+        }
+      })
+      ;
     }
-  });
+  );
+
 };
 
 exports.readAll = callback => {
   var data = [];
   _.each(items, (text, id) => {
-    data.push({ id, text });
+    data.push({
+      id,
+      text
+    });
   });
   callback(null, data);
 };
@@ -33,7 +44,10 @@ exports.readOne = (id, callback) => {
   if (!text) {
     callback(new Error(`No item with id: ${id}`));
   } else {
-    callback(null, { id, text });
+    callback(null, {
+      id,
+      text
+    });
   }
 };
 
@@ -43,7 +57,10 @@ exports.update = (id, text, callback) => {
     callback(new Error(`No item with id: ${id}`));
   } else {
     items[id] = text;
-    callback(null, { id, text });
+    callback(null, {
+      id,
+      text
+    });
   }
 };
 
