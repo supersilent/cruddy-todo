@@ -42,7 +42,7 @@ exports.readAll = callback => {
 
 exports.readOne = (id, callback) => {
   // var text = items[id];
-  fs.readFile(exports.dataDir + "/" + id + ".txt", 'utf8', (err, data) => {
+  fs.readFile(exports.dataDir + "/" + id + ".txt", "utf8", (err, data) => {
     if (err) {
       return callback(err);
     } else {
@@ -55,13 +55,13 @@ exports.readOne = (id, callback) => {
 };
 
 exports.update = (id, text, callback) => {
-  fs.access(exports.dataDir + "/" + id + ".txt", fs.constants.F_OK, (err) => {
+  fs.access(exports.dataDir + "/" + id + ".txt", fs.constants.F_OK, err => {
     if (err) {
       return callback(err);
     } else {
       fs.writeFile(exports.dataDir + "/" + id + ".txt", text, err => {
         if (err) {
-          return callback(err)
+          return callback(err);
         } else {
           callback(null, {
             id,
@@ -71,29 +71,19 @@ exports.update = (id, text, callback) => {
       });
     }
   });
-  
-
-    // var item = items[id];
-  // if (!item) {
-  //   callback(new Error(`No item with id: ${id}`));
-  // } else {
-  //   items[id] = text;
-  //   callback(null, {
-  //     id,
-  //     text
-  //   });
-  // }
 };
 
 exports.delete = (id, callback) => {
-  var item = items[id];
+  // var item = items[id];
   delete items[id];
-  if (!item) {
-    // report an error if item not found
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback();
-  }
+
+  fs.unlink(exports.dataDir + "/" + id + ".txt", (err) =>{
+    if (err) {
+      return callback(err);
+    } else {
+      callback();
+    }
+  });
 };
 
 // Config+Initialization code -- DO NOT MODIFY /////////////////////////////////
